@@ -67,7 +67,7 @@ def test(nummerplade):
         print(e)
 
     img_rgb = load_image(nummerplade)
-    results = yolo_model.predict(img_rgb, conf=0.6, iou=0.4, verbose=True)
+    results = yolo_model.predict(img_rgb, conf=0.5, iou=0.4, verbose=True)
 
     if not results or len(results[0].boxes) == 0:
         print("[WARNING] No detections found.")

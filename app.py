@@ -24,4 +24,5 @@ async def get_car_number_plate(image: UploadFile = File(...)):
     return retrun_data
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host=HOST, port=int(PORT), reload=False)
+    uvicorn.run("app:app", host=HOST, port=PORT, reload=False)
+
