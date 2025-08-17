@@ -1,6 +1,6 @@
 import easyocr
 import numpy as np
-import numberplate_checks
+import src.numberplate_checks as numberplate_checks
 import cv2
 from ultralytics import YOLO
 
@@ -59,7 +59,7 @@ def load_image(nummerplade):
 
 
 def test(nummerplade):
-    model_path = "models/AI/best.pt"
+    model_path = "src/models/AI/best.pt"
     try:
         yolo_model = YOLO(model_path)
         print(f"[INFO] Successfully loaded model from: {model_path}")

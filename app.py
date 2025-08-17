@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-import process_image
-import data
+import src.process_image as process_image
+import src.data as data
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -24,5 +24,4 @@ async def get_car_number_plate(image: UploadFile = File(...)):
     return retrun_data
 
 if __name__ == "__main__":
-    print(HOST)
-    uvicorn.run("app:app", host=HOST, port=int(PORT), reload=True)
+    uvicorn.run("app:app", host=HOST, port=int(PORT), reload=False)

@@ -1,6 +1,6 @@
 import os
 import requests
-from models.car_model import Car
+from src.models.car_model import Car
 from dotenv import load_dotenv
 load_dotenv()
 async def get_data(nummerplade):
