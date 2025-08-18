@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 async def get_data(nummerplade):
     START_URL = os.getenv("data_url")
-    url = f"{START_URL}{nummerplade}"
+    url = f"https://www.tjekbil.dk/api/v3/dmr/regnr/{nummerplade}"
     try:
         response = requests.get(url)
         if response.status_code == 200:
@@ -19,13 +19,13 @@ async def get_data(nummerplade):
         return None
 
 async def exstract_data(nummerplade):
-    car_data = await get_data(nummerplade)
+    car_data = await get_data(nummerplade)  
     #region basic car data
     basic_car_data = car_data['basic']
     regnummer = basic_car_data.get('regNr')
     status = basic_car_data.get('status')
     rented_car = basic_car_data.get('bilLeaset')
-    leasingPeriode = basic_car_data.get('leasingPeriode')
+    leasingPeriode = basic_car_data.get('leasingPeriode') or "Ingen leasing periode"
     maerkeTypeNavn = basic_car_data.get('maerkeTypeNavn')
     modelTypeNavn = basic_car_data.get('modelTypeNavn')
     modelÅr = basic_car_data.get('modelAar')

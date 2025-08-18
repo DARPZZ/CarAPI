@@ -7,7 +7,7 @@ from ultralytics import YOLO
 model_path = "src/models/AI/best.pt"
 yolo_model = YOLO(model_path)
 reader_da = easyocr.Reader(['da', 'en'], gpu=False)
-confidence_threshold = 0.5
+confidence_threshold = 0.2
 
 def get_numberplate_info(cropped_plate_img):
     """
@@ -15,12 +15,7 @@ def get_numberplate_info(cropped_plate_img):
     runs OCR, filters by confidence, and validates Danish number plates.
     Returns the detected plate as a string or None.
     """
-    if cropped_plate_img.shape[2] == 3:  
-        img_rgb = cv2.cvtColor(cropped_plate_img, cv2.COLOR_BGR2RGB)
-    else:
-        img_rgb = cropped_plate_img
-
-
+    img_rgb = cv2.cvtColor(cropped_plate_img, cv2.COLOR_BGR2GRAY)
     results_with_details = reader_da.readtext(img_rgb, detail=1, paragraph=False)
     
     confident_results = []
@@ -66,7 +61,7 @@ def test(nummerplade):
         print(e)
 
     img_rgb = load_image(nummerplade)
-    results = yolo_model.predict(img_rgb, conf=0.5, iou=0.4, verbose=True)
+    results = yolo_model.predict(img_rgb, conf=0.3, iou=0.4, verbose=True)
 
     if not results or len(results[0].boxes) == 0:
         print("[WARNING] No detections found.")
