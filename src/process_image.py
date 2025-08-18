@@ -4,7 +4,8 @@ import src.numberplate_checks as numberplate_checks
 import cv2
 from ultralytics import YOLO
 
-
+model_path = "src/models/AI/best.pt"
+yolo_model = YOLO(model_path)
 reader_da = easyocr.Reader(['da', 'en'], gpu=False)
 confidence_threshold = 0.5
 
@@ -59,9 +60,7 @@ def load_image(nummerplade):
 
 
 def test(nummerplade):
-    model_path = "src/models/AI/best.pt"
     try:
-        yolo_model = YOLO(model_path)
         print(f"[INFO] Successfully loaded model from: {model_path}")
     except Exception as e:
         print(e)
