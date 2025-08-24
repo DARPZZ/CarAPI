@@ -20,6 +20,8 @@ async def get_data(nummerplade):
 
 async def exstract_data(nummerplade):
     car_data = await get_data(nummerplade)  
+    if(car_data is None):
+        return None
     #region basic car data
     basic_car_data = car_data['basic']
     regnummer = basic_car_data.get('regNr')
