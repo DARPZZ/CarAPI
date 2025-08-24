@@ -16,7 +16,9 @@ def get_numberplate_info(cropped_plate_img):
     Returns the detected plate as a string or None.
     """
     img_rgb = cv2.cvtColor(cropped_plate_img, cv2.COLOR_BGR2GRAY)
-    results_with_details = reader_da.readtext(img_rgb, detail=1, paragraph=False)
+    target_size = (200, 100)
+    img_resized = cv2.resize(img_rgb, target_size, interpolation=cv2.INTER_AREA)
+    results_with_details = reader_da.readtext(img_resized, detail=1, paragraph=False)
     
     confident_results = []
     for (bbox, text, confidence) in results_with_details:
