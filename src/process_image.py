@@ -10,15 +10,15 @@ reader_da = easyocr.Reader(['da', 'en'], gpu=False)
 confidence_threshold = 0.2
 
 def get_numberplate_info(cropped_plate_img):
+    plate_array = []
     """
     Takes a cropped plate image as a numpy array (BGR or RGB),
     runs OCR, filters by confidence, and validates Danish number plates.
     Returns the detected plate as a string or None.
     """
     img_rgb = cv2.cvtColor(cropped_plate_img, cv2.COLOR_BGR2GRAY)
-    target_size = (200, 100)
-    img_resized = cv2.resize(img_rgb, target_size, interpolation=cv2.INTER_AREA)
-    results_with_details = reader_da.readtext(img_resized, detail=1, paragraph=False)
+
+    results_with_details = reader_da.readtext(img_rgb, detail=1, paragraph=False)
     
     confident_results = []
     for (bbox, text, confidence) in results_with_details:
@@ -26,11 +26,11 @@ def get_numberplate_info(cropped_plate_img):
             confident_results.append(text)
     
     for element in confident_results:
-        number_plate_stripped = element.replace(" ", "")
-        if numberplate_checks.check_danish_numberplate(number_plate_stripped):
-            return number_plate_stripped
-    return None
-
+        plate_array.append(element)
+    for numberplate in plate_array:
+        numberplate_lenght = len(numberplate)
+        if(numberplate_lenght > 6 and numberplate_lenght < 10):
+            return numberplate_checks.numberplate_check(numberplate)
 
 def load_image(nummerplade):
     """

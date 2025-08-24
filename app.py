@@ -17,11 +17,10 @@ async def get_car_number_plate(image: UploadFile = File(...)):
 
     if image.filename == "":
         raise HTTPException(status_code=400, detail="No selected file")
-
     nummerplade = process_image.test(image.file)
     retrun_data = await data.exstract_data(nummerplade)
     if(retrun_data == None):
-        raise HTTPException(status_code=400, detail="Could not find number plate")
+        raise HTTPException(status_code=418, detail="Could not find number plate")
     return retrun_data
 
 if __name__ == "__main__":
