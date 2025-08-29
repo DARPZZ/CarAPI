@@ -18,6 +18,13 @@ async def get_data(nummerplade):
         print('Error:', e)
         return None
 
+    
+def koeretoejUdstyr(basic_car_data):
+    udstyr_liste = []
+    koeretoejUdstyrSamling = basic_car_data.get('koeretoejUdstyrSamling')
+    for udstyr in koeretoejUdstyrSamling:
+        udstyr_liste.append(udstyr)
+    return udstyr_liste
 async def exstract_data(nummerplade):
     car_data = await get_data(nummerplade)  
     if(car_data is None):
@@ -34,6 +41,31 @@ async def exstract_data(nummerplade):
     motorStoerrelse = basic_car_data.get('motorStoerrelse')
     motor_hestekræfter = basic_car_data.get('motorHestekraefter')
     motorKmPerLiter =basic_car_data.get('motorKmPerLiter')
+    totalVaegt = basic_car_data.get('totalVaegt')
+    drivkraftTypeNavn = basic_car_data.get('drivkraftTypeNavn')
+    maksimumHastighed = basic_car_data.get('maksimumHastighed')
+    motorCylinderAntal = basic_car_data.get('motorCylinderAntal')
+    antalDoere = basic_car_data.get('antalDoere')
+    #endregion
+    #region extendedinfo
+    extended_car_data = car_data['extended']
+    insurance = extended_car_data['insurance']
+    insurance_selskab  = insurance.get('selskab')
+    insurance_historik = insurance.get('historik')
+    historik_liste = []
+    for historik in insurance_historik:
+        selskab = historik.get('selskab')
+        status = historik.get('status')
+        oprettet = historik.get('oprettet')
+        historik_liste.append({
+            'selskab': selskab,
+            'status': status,
+            'oprettet': oprettet
+        })
+    
+    #endregion
+    #region køretøjudstyr
+    udstyr_liste = koeretoejUdstyr(basic_car_data)
     #endregion
     return Car(
        regNr=regnummer,
@@ -45,5 +77,13 @@ async def exstract_data(nummerplade):
        modelÅr=modelÅr,
        motor_størrelse=motorStoerrelse,
        motor_hestekræfter=motor_hestekræfter,
-       motorKmPerLiter=motorKmPerLiter       
+       motorKmPerLiter=motorKmPerLiter,
+       totalVaegt=totalVaegt,
+       drivkraftTypeNavn=drivkraftTypeNavn,
+       udstyr_liste=udstyr_liste,
+       maksimumHastighed=maksimumHastighed,
+       motorCylinderAntal=motorCylinderAntal,
+       antalDoere = antalDoere,
+       insurance = historik_liste
+       
     )

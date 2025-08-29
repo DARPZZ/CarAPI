@@ -10,3 +10,10 @@ class Car(BaseModel):
     motor_størrelse: float
     motor_hestekræfter: float
     motorKmPerLiter: float
+    totalVaegt: int
+    drivkraftTypeNavn : str
+    udstyr_liste : list
+    maksimumHastighed :int
+    motorCylinderAntal : int
+    antalDoere: int
+    insurance: list
